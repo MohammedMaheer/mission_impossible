@@ -1,0 +1,1251 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASSIFIED - IMF</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Courier+Prime:wght@400;700&family=Space+Mono:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier Prime', 'Space Mono', 'Share Tech Mono', monospace;
+            background: #0a0a0a;
+            color: #0f0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
+            position: relative;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+            text-shadow: 0 0 2px rgba(0, 255, 0, 0.3);
+        }
+
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.06;
+        }
+
+        .radar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            border: 2px solid #0f0;
+            border-radius: 50%;
+            opacity: 0.25;
+            z-index: 100;
+            animation: radarPulse 3s infinite;
+        }
+
+        .radar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 50%;
+            background: linear-gradient(to top, #0f0, transparent);
+            transform-origin: bottom center;
+            animation: radarSweep 3s linear infinite;
+        }
+
+        .radar::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            height: 60%;
+            border: 1px solid #0f0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+
+        @keyframes radarPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.3), inset 0 0 5px rgba(0, 255, 0, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.4), inset 0 0 15px rgba(0, 255, 0, 0.3); }
+        }
+
+        @keyframes radarSweep {
+            0% { transform: translate(-50%, -100%) rotate(0deg); }
+            100% { transform: translate(-50%, -100%) rotate(360deg); }
+        }
+
+        .video-static {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15) 0px, transparent 1px, transparent 2px, rgba(0, 0, 0, 0.15) 3px),
+                repeating-linear-gradient(90deg, rgba(0, 255, 0, 0.01) 0px, transparent 1px, transparent 2px, rgba(0, 255, 0, 0.01) 3px);
+            pointer-events: none;
+            z-index: 1000;
+            animation: staticShift 0.2s infinite;
+        }
+
+        @keyframes staticShift {
+            0% { transform: translate(0, 0); opacity: 0.5; }
+            50% { transform: translate(1px, -1px); opacity: 0.7; }
+            100% { transform: translate(-1px, 1px); opacity: 0.5; }
+        }
+
+        .boot-sequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeOut 0.5s ease-out 3.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; pointer-events: none; }
+        }
+
+        .boot-text {
+            color: #00ff00;
+            font-size: clamp(0.75rem, 1.8vw, 1rem);
+            margin: 8px 0;
+            opacity: 0;
+            animation: bootLine 0.4s ease-out forwards;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .boot-text:nth-child(1) { animation-delay: 0s; }
+        .boot-text:nth-child(2) { animation-delay: 0.3s; }
+        .boot-text:nth-child(3) { animation-delay: 0.6s; }
+        .boot-text:nth-child(4) { animation-delay: 0.9s; }
+        .boot-text:nth-child(5) { animation-delay: 1.2s; }
+        .boot-text:nth-child(6) { animation-delay: 1.5s; }
+        .boot-text:nth-child(7) { animation-delay: 1.8s; }
+        .boot-text:nth-child(8) { animation-delay: 2.1s; }
+
+        @keyframes bootLine {
+            0% { opacity: 0; transform: translateX(-30px); }
+            50% { opacity: 1; }
+            100% { opacity: 0.9; transform: translateX(0); }
+        }
+
+        .boot-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(4rem, 10vw, 7rem);
+            color: #00ff00;
+            letter-spacing: 30px;
+            margin: 40px 0;
+            opacity: 0;
+            animation: logoAppear 1s ease-out 2.5s forwards;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 0, 0.8), 
+                0 0 20px rgba(0, 255, 0, 0.5), 
+                0 0 30px rgba(0, 255, 0, 0.3);
+            font-weight: 900;
+        }
+
+        @keyframes logoAppear {
+            0% { opacity: 0; transform: scale(0.3) rotateY(180deg); filter: blur(20px); }
+            100% { opacity: 1; transform: scale(1) rotateY(0deg); filter: blur(0); }
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+            z-index: 10;
+            padding: 20px;
+            opacity: 0;
+            animation: containerAppear 1s ease-out 3.5s forwards;
+        }
+
+        @keyframes containerAppear {
+            to { opacity: 1; }
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 1400px;
+            background: 
+                linear-gradient(135deg, rgba(0, 8, 0, 0.98), rgba(0, 5, 0, 0.96)),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.01) 2px, rgba(0, 255, 0, 0.01) 4px);
+            border: 1px solid rgba(0, 255, 0, 0.4);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.2),
+                0 0 60px rgba(0, 255, 0, 0.1),
+                inset 0 0 60px rgba(0, 255, 0, 0.03);
+            padding: clamp(30px, 5vw, 80px);
+            position: relative;
+            transform-style: preserve-3d;
+            animation: screenEntrance 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 15px;
+        }
+
+        @keyframes screenEntrance {
+            0% {
+                opacity: 0;
+                transform: rotateX(-90deg) translateZ(-500px);
+                filter: blur(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateX(0deg) translateZ(0px);
+                filter: blur(0);
+            }
+        }
+
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, rgba(0, 255, 0, 0.3), rgba(0, 255, 136, 0.2), rgba(0, 255, 0, 0.3), rgba(0, 255, 136, 0.2));
+            background-size: 400% 400%;
+            z-index: -1;
+            border-radius: 15px;
+            animation: borderFlow 6s ease infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .corner-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(0, 255, 0, 0.5);
+            animation: cornerPulse 2s infinite;
+            z-index: 10;
+        }
+
+        .corner-marker.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+        .corner-marker.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+        .corner-marker.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+        .corner-marker.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+        @keyframes cornerPulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: clamp(30px, 5vw, 50px);
+            border-bottom: 3px solid #0f0;
+            padding-bottom: clamp(20px, 4vw, 40px);
+            position: relative;
+            animation: headerGlitch 8s infinite;
+        }
+
+        @keyframes headerGlitch {
+            0%, 96%, 100% { filter: none; transform: translate(0); }
+            97% { filter: hue-rotate(90deg) brightness(1.3); transform: translate(-3px, 3px); }
+            98% { filter: hue-rotate(-90deg) brightness(0.8); transform: translate(3px, -3px); }
+            99% { filter: hue-rotate(180deg) brightness(1.2); transform: translate(-2px, -2px); }
+        }
+
+        .classified {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            letter-spacing: clamp(8px, 2vw, 20px);
+            color: #f00;
+            text-shadow: 
+                0 0 30px #f00, 
+                0 0 60px #f00,
+                3px 3px 0 #0ff,
+                -3px -3px 0 #ff0,
+                0 0 100px rgba(255, 0, 0, 0.5);
+            animation: classifiedPulse 2.5s infinite;
+            position: relative;
+            display: inline-block;
+            font-weight: 900;
+        }
+
+        @keyframes classifiedPulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                opacity: 0.85; 
+                transform: scale(1.03);
+                filter: brightness(1.3);
+            }
+        }
+
+        .imf-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin: clamp(15px, 3vw, 25px) 0;
+            letter-spacing: clamp(15px, 3vw, 35px);
+            animation: logoGlow 3s infinite;
+            text-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.6), 
+                0 0 30px rgba(0, 255, 0, 0.4),
+                0 0 45px rgba(0, 255, 0, 0.2);
+            font-weight: 900;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { 
+                text-shadow: 0 0 15px rgba(0, 255, 0, 0.6), 0 0 30px rgba(0, 255, 0, 0.4), 0 0 45px rgba(0, 255, 0, 0.2);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 40px rgba(0, 255, 0, 0.5), 0 0 60px rgba(0, 255, 0, 0.3);
+            }
+        }
+
+        .subtitle {
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+            font-size: clamp(0.7rem, 1.6vw, 1rem);
+            letter-spacing: clamp(3px, 0.8vw, 6px);
+            opacity: 0.9;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .timestamp {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+            color: rgba(0, 255, 0, 0.7);
+            opacity: 0.6;
+            animation: blink 2s infinite;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.3; }
+        }
+
+        .rec-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+            color: #f00;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .rec-dot {
+            width: 14px;
+            height: 14px;
+            background: #f00;
+            border-radius: 50%;
+            animation: recBlink 1.2s infinite;
+            box-shadow: 0 0 15px #f00;
+        }
+
+        @keyframes recBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.85); }
+        }
+
+        .content {
+            opacity: 0;
+            animation: contentFadeIn 1.5s ease-in 0.5s forwards;
+        }
+
+        @keyframes contentFadeIn {
+            to { opacity: 1; }
+        }
+
+        .agent-id {
+            font-family: 'Courier Prime', 'Space Mono', monospace;
+            font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+            margin: clamp(20px, 4vw, 35px) 0;
+            padding: clamp(20px, 4vw, 35px);
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.08), rgba(0, 255, 0, 0.03));
+            border-left: 4px solid rgba(0, 255, 0, 0.5);
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 1s ease-out 0.8s both, agentPulse 4s ease-in-out infinite 2s;
+            line-height: 2.2;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.1);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes agentPulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(0, 255, 0, 0.1);
+                border-left-width: 4px;
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(0, 255, 0, 0.2), 0 0 30px rgba(0, 255, 0, 0.1);
+                border-left-width: 6px;
+            }
+        }
+
+        .agent-id::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 0, 0.08), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .agent-id strong {
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .playback-bar {
+            height: 4px;
+            background: rgba(0, 255, 0, 0.15);
+            margin: clamp(20px, 4vw, 35px) 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            box-shadow: inset 0 0 5px rgba(0, 255, 0, 0.2);
+        }
+
+        .playback-progress {
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 255, 0, 0.6), rgba(0, 255, 136, 0.5));
+            width: 0;
+            animation: playbackProgress 12s linear infinite;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        @keyframes playbackProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .mission-text {
+            line-height: 1.8;
+            margin: clamp(20px, 4vw, 35px) 0;
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            letter-spacing: 1px;
+            color: rgba(0, 255, 136, 0.9);
+            font-weight: 400;
+            text-transform: uppercase;
+            word-spacing: 2px;
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+        }
+
+        .mission-text p {
+            opacity: 0;
+            animation: none; /* Remove initial animation */
+        }
+
+        .mission-text p {
+            margin: clamp(12px, 2.5vw, 20px) 0;
+            padding: clamp(12px, 2vw, 18px);
+            border-radius: 8px;
+            position: relative;
+            background: rgba(0, 255, 0, 0.02);
+            color: rgba(0, 255, 136, 0.9);
+            overflow: hidden;
+            opacity: 0;
+            animation: none; /* Start hidden, animated by typewriter */
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+            font-weight: 400;
+            letter-spacing: 1px;
+            border-left: 2px solid rgba(0, 255, 136, 0.2);
+            box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.05);
+        }
+
+        .mission-text p::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            animation: textShimmer 4s ease-in-out infinite;
+        }
+
+        .mission-text p::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 136, 0.02) 2px, rgba(0, 255, 136, 0.02) 4px);
+            pointer-events: none;
+            border-radius: 8px;
+        }
+
+        .mission-text p:nth-child(1) { animation-delay: 1.2s; background: rgba(0, 255, 0, 0.05); color: rgba(0, 255, 0, 0.9); }
+        .mission-text p:nth-child(2) { animation-delay: 1.4s; }
+        .mission-text p:nth-child(3) { animation-delay: 1.6s; }
+        .mission-text p:nth-child(4) { animation-delay: 1.8s; }
+        .mission-text p:nth-child(5) { animation-delay: 2s; }
+        .mission-text p:nth-child(6) { animation-delay: 2.2s; }
+
+        @keyframes textReveal {
+            from {
+                opacity: 0;
+                transform: translateX(-40px) translateY(10px);
+                filter: blur(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes textPulse {
+            0% {
+                transform: scale(1) translateX(0);
+                text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+            }
+            50% {
+                transform: scale(1.015) translateX(1px);
+                text-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.2);
+            }
+            100% {
+                transform: scale(1.02) translateX(2px);
+                text-shadow: 0 0 15px rgba(0, 255, 136, 0.6), 0 0 25px rgba(0, 255, 136, 0.3);
+            }
+        }
+
+        @keyframes textShimmer {
+            0% {
+                left: -100%;
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
+        }
+
+        .mission-text strong {
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(0, 255, 255, 0.9);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+            font-weight: 700;
+        }
+
+        .target {
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+            color: #ff0;
+            text-shadow: 0 0 15px #ff0, 0 0 30px rgba(255, 255, 0, 0.5);
+            font-weight: 700;
+            padding: 3px 12px;
+            background: rgba(255, 255, 0, 0.15);
+            border-radius: 5px;
+            animation: targetFlash 3s infinite;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 0, 0.3);
+            position: relative;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .target.animated {
+            animation: targetFlash 3s infinite, targetFloat 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes targetFlash {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; box-shadow: 0 0 20px #ff0; transform: scale(1.02); }
+        }
+
+        @keyframes targetFloat {
+            0% { transform: translateY(0) rotateX(0deg); }
+            50% { transform: translateY(-3px) rotateX(5deg); }
+            100% { transform: translateY(-5px) rotateX(10deg); }
+        }
+
+        .warning {
+            margin: clamp(30px, 5vw, 50px) 0;
+            padding: clamp(20px, 4vw, 40px);
+            border: 4px solid #f00;
+            background:
+                linear-gradient(135deg, rgba(255, 0, 0, 0.25), rgba(255, 0, 0, 0.1)),
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 0, 0, 0.05) 10px, rgba(255, 0, 0, 0.05) 20px);
+            text-align: center;
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+            font-size: clamp(1rem, 2.2vw, 1.6rem);
+            color: #f00;
+            text-shadow: 0 0 20px #f00, 0 0 40px rgba(255, 0, 0, 0.5);
+            animation: warningPulse 1.8s infinite, warningShake 0.5s ease-in-out infinite alternate;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        @keyframes warningPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), inset 0 0 30px rgba(255, 0, 0, 0.1);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 50px rgba(255, 0, 0, 0.9), 0 0 80px rgba(255, 0, 0, 0.5), inset 0 0 50px rgba(255, 0, 0, 0.2);
+            }
+        }
+
+        @keyframes warningShake {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(3px) rotate(0.5deg); }
+        }
+
+        .buttons {
+            display: flex;
+            gap: clamp(20px, 4vw, 40px);
+            justify-content: center;
+            margin-top: clamp(35px, 5vw, 60px);
+            opacity: 0;
+            animation: buttonsFadeIn 1s ease-in 3.2s forwards;
+            flex-wrap: wrap;
+        }
+
+        @keyframes buttonsFadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        button {
+            padding: clamp(15px, 2.5vw, 25px) clamp(35px, 5vw, 70px);
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-family: 'Space Mono', 'Courier Prime', monospace;
+            border: 3px solid;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-transform: uppercase;
+            letter-spacing: clamp(2px, 0.6vw, 4px);
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.7s, height 0.7s;
+        }
+
+        button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .accept {
+            color: #0f0;
+            border-color: #0f0;
+            text-shadow: 0 0 15px #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .accept::before {
+            background: #0f0;
+        }
+
+        .accept:hover {
+            color: #000;
+            box-shadow: 0 0 40px #0f0, 0 0 60px rgba(0, 255, 0, 0.5);
+            transform: scale(1.08) translateY(-3px);
+        }
+
+        .decline {
+            color: #f00;
+            border-color: #f00;
+            text-shadow: 0 0 15px #f00;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .decline::before {
+            background: #f00;
+        }
+
+        .decline:hover {
+            color: #000;
+            box-shadow: 0 0 40px #f00, 0 0 60px rgba(255, 0, 0, 0.5);
+            transform: scale(1.08) translateY(-3px);
+        }
+
+        button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .countdown {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(10rem, 25vw, 22rem);
+            color: #f00;
+            text-shadow: 0 0 60px #f00, 0 0 120px #f00, 0 0 180px rgba(255, 0, 0, 0.7);
+            z-index: 9999;
+            animation: countPulse 1s infinite;
+            font-weight: 900;
+        }
+
+        @keyframes countPulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.25);
+                filter: brightness(1.5);
+            }
+        }
+
+        @keyframes countGlow {
+            0% {
+                background: radial-gradient(circle at center, rgba(255, 0, 0, 0.15) 0%, rgba(255, 0, 0, 0.05) 50%, transparent 100%);
+                filter: hue-rotate(0deg) saturate(1);
+            }
+            100% {
+                background: radial-gradient(circle at center, rgba(255, 0, 0, 0.25) 0%, rgba(255, 0, 0, 0.1) 50%, transparent 100%);
+                filter: hue-rotate(10deg) saturate(1.2);
+            }
+        }
+
+        @keyframes countEnter {
+            0% {
+                transform: scale(0) rotateY(180deg);
+                opacity: 0;
+                filter: blur(20px);
+            }
+            50% {
+                transform: scale(1.2) rotateY(90deg);
+                opacity: 0.8;
+                filter: blur(5px);
+            }
+            100% {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes screenShake {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            10% { transform: translateX(-3px) translateY(-2px); }
+            20% { transform: translateX(3px) translateY(2px); }
+            30% { transform: translateX(-2px) translateY(-1px); }
+            40% { transform: translateX(2px) translateY(1px); }
+            50% { transform: translateX(-1px) translateY(-1px); }
+            60% { transform: translateX(1px) translateY(0); }
+            70% { transform: translateX(-1px) translateY(1px); }
+            80% { transform: translateX(1px) translateY(-1px); }
+            90% { transform: translateX(0) translateY(0); }
+        }
+
+        @keyframes finalMessage {
+            0% {
+                opacity: 0;
+                transform: scale(0.5) translateY(50px);
+                filter: blur(10px);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1) translateY(-10px);
+                filter: blur(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        .explosion {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+        }
+
+        .static {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.5"/></svg>');
+            z-index: 10001;
+            animation: staticAnim 0.1s infinite;
+        }
+
+        @keyframes staticAnim {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.6; }
+        }
+
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background:
+                linear-gradient(135deg, rgba(0, 60, 0, 0.98), rgba(0, 40, 0, 0.95)),
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 255, 0, 0.05) 10px, rgba(0, 255, 0, 0.05) 20px);
+            border: 4px solid #0f0;
+            padding: clamp(40px, 6vw, 70px) clamp(50px, 8vw, 90px);
+            border-radius: 15px;
+            z-index: 9999;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0, 255, 0, 0.8), 0 0 120px rgba(0, 255, 0, 0.4);
+        }
+
+        .success-message h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: #0f0;
+            text-shadow: 0 0 30px #0f0, 0 0 60px rgba(0, 255, 0, 0.5);
+            margin-bottom: 25px;
+            font-weight: 900;
+            letter-spacing: 5px;
+        }
+
+        .success-message p {
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            color: #00ff88;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+
+        .fingerprint {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 120px;
+            height: 120px;
+            opacity: 0.3;
+            animation: fingerprintScan 4s infinite;
+            z-index: 100;
+        }
+
+        @keyframes fingerprintScan {
+            0%, 100% { opacity: 0.3; filter: brightness(1); }
+            50% { opacity: 0.6; filter: brightness(1.5); }
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(0deg, transparent 24px, rgba(0, 255, 0, 0.03) 25px),
+                linear-gradient(90deg, transparent 24px, rgba(0, 255, 0, 0.03) 25px);
+            background-size: 25px 25px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .radar {
+                width: 100px;
+                height: 100px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .screen {
+                border-width: 2px;
+                padding: clamp(20px, 5vw, 40px);
+            }
+            
+            .corner-marker {
+                width: 25px;
+                height: 25px;
+            }
+
+            .boot-logo {
+                letter-spacing: 15px;
+            }
+
+            .imf-logo {
+                letter-spacing: clamp(10px, 5vw, 20px);
+            }
+
+            .fingerprint {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="matrix"></canvas>
+    <div class="video-static"></div>
+    <div class="grid-lines"></div>
+    <div class="radar"></div>
+    
+    <svg class="fingerprint" viewBox="0 0 100 100">
+        <defs>
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+        <g stroke="#0f0" fill="none" stroke-width="1.5" filter="url(#glow)">
+            <ellipse cx="50" cy="50" rx="8" ry="12"/>
+            <ellipse cx="50" cy="50" rx="14" ry="20"/>
+            <ellipse cx="50" cy="50" rx="20" ry="28"/>
+            <ellipse cx="50" cy="50" rx="26" ry="36"/>
+            <path d="M 30 50 Q 30 30, 50 25"/>
+            <path d="M 70 50 Q 70 30, 50 25"/>
+            <path d="M 35 55 Q 35 70, 50 75"/>
+            <path d="M 65 55 Q 65 70, 50 75"/>
+        </g>
+    </svg>
+
+    <div class="boot-sequence" id="bootSequence">
+        <div class="boot-text">INITIALIZING SECURE COMMUNICATION PROTOCOL...</div>
+        <div class="boot-text">ESTABLISHING ENCRYPTED CONNECTION...</div>
+        <div class="boot-text">VERIFYING BIOMETRIC AUTHENTICATION...</div>
+        <div class="boot-text">DECRYPTING MISSION PARAMETERS...</div>
+        <div class="boot-text">LOADING AGENT PROFILE...</div>
+        <div class="boot-text">SYNCHRONIZING SATELLITE UPLINK...</div>
+        <div class="boot-text">ACCESSING IMF DATABASE...</div>
+        <div class="boot-text">CONNECTION ESTABLISHED - CLEARANCE LEVEL: OMEGA</div>
+        <div class="boot-logo">IMF</div>
+    </div>
+
+    <div class="container">
+        <div class="screen">
+            <div class="corner-marker tl"></div>
+            <div class="corner-marker tr"></div>
+            <div class="corner-marker bl"></div>
+            <div class="corner-marker br"></div>
+
+            <div class="timestamp" id="timestamp">00:00:00</div>
+            <div class="rec-indicator">
+                <div class="rec-dot"></div>
+                <span>REC</span>
+            </div>
+
+            <div class="header">
+                <div class="classified">CLASSIFIED</div>
+                <div class="imf-logo">IMF</div>
+                <div class="subtitle">IMPOSSIBLE MISSIONS FORCE</div>
+            </div>
+
+            <div class="content">
+                <div class="agent-id">
+                    <strong>AGENT:</strong> MAHEER<br>
+                    <strong>CLEARANCE:</strong> NITTE-7 OMEGA<br>
+                    <strong>STATUS:</strong> ACTIVE
+                </div>
+
+                <div class="playback-bar">
+                    <div class="playback-progress"></div>
+                </div>
+
+                <div class="mission-text">
+                    <p><strong>MISSION BRIEFING:</strong> Your mission, should you choose to accept it, involves the infiltration of a highly secure facility operated by the Syndicate.</p>
+                    
+                    <p><strong>OBJECTIVE:</strong> Retrieve the classified <span class="target">PHANTOM PROTOCOL</span> files from the underground vault located beneath the Secret Nitte HQ.</p>
+                    
+                    <p><strong>INTEL:</strong> The facility employs biometric security, thermal sensors, and armed guards on 24-hour rotation. The vault is accessible only during a 90-second window during the daily system backup at 03:00 hours.</p>
+                    
+                    <p><strong>TEAM:</strong> You will be assisted by technical specialist Agent Eshaan and field operative Trishika. Anwesha will provide remote support from mobile command.</p>
+                    
+                    <p><strong>EXFILTRATION:</strong> A helicopter will be standing by at the northern extraction point. Radio silence must be maintained until you reach the safe zone.</p>
+                    
+                    <p><strong>WARNING:</strong> The Syndicate has operatives embedded in multiple intelligence agencies. Trust no one outside your immediate team. If any member is compromised, abort immediately.</p>
+                </div>
+
+                <div class="warning">
+                    ⚠ THIS MESSAGE WILL SELF-DESTRUCT IN 5 SECONDS ⚠
+                </div>
+
+                <div class="buttons">
+                    <button class="accept" onclick="acceptMission()">
+                        <span>ACCEPT MISSION</span>
+                    </button>
+                    <button class="decline" onclick="declineMission()">
+                        <span>DECLINE</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="countdown" id="countdown">5</div>
+    <div class="explosion" id="explosion"></div>
+    <div class="static" id="static"></div>
+    <div class="success-message" id="successMessage">
+        <h2>MISSION ACCEPTED</h2>
+        <p>Good luck, Agent Maheer.<br>This message will now self-destruct.</p>
+    </div>
+
+    <script>
+        // Matrix rain effect
+        const canvas = document.querySelector('.matrix');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Timestamp
+        function updateTimestamp() {
+            const timestampEl = document.getElementById('timestamp');
+            if (timestampEl) {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                timestampEl.textContent = `${hours}:${minutes}:${seconds}`;
+            }
+        }
+
+        setInterval(updateTimestamp, 1000);
+        updateTimestamp();
+
+        // Start typewriter animation when content appears
+        setTimeout(animateMissionText, 3500);
+
+        // Typewriter effect for mission text
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            element.style.opacity = '1';
+
+            function type() {
+                if (i < text.length) {
+                    // Add cursor effect during typing
+                    const cursor = i === 0 ? '|' : '';
+                    element.innerHTML = text.substring(0, i) + cursor;
+
+                    // Add floating animation to target elements when they're typed
+                    if (text.charAt(i) === '>' && text.substring(0, i).includes('target')) {
+                        const targetElement = element.querySelector('.target');
+                        if (targetElement) {
+                            setTimeout(() => {
+                                targetElement.classList.add('animated');
+                            }, 100);
+                        }
+                    }
+
+                    i++;
+                    setTimeout(type, speed + Math.random() * 10); // Even smoother typing
+                } else {
+                    // Complete the text and remove cursor
+                    element.innerHTML = text;
+                    // Start the enhanced animations after typing is complete
+                    setTimeout(() => {
+                        element.style.animation = 'textPulse 4s ease-in-out infinite alternate';
+                    }, 300);
+                }
+            }
+            type();
+        }
+
+        // Animate mission text on load
+        function animateMissionText() {
+            const paragraphs = document.querySelectorAll('.mission-text p');
+            paragraphs.forEach((p, index) => {
+                const originalText = p.textContent;
+                setTimeout(() => {
+                    typeWriter(p, originalText, 25); // Slightly slower for readability
+                }, index * 1200 + 2500); // More spacing between paragraphs
+            });
+        }
+
+        // Mission functions
+        function acceptMission() {
+            const screen = document.querySelector('.screen');
+            const successMsg = document.getElementById('successMessage');
+            const countdown = document.getElementById('countdown');
+            
+            screen.style.animation = 'none';
+            screen.style.opacity = '0';
+            screen.style.transform = 'scale(0.8)';
+            screen.style.transition = 'all 0.5s ease-out';
+            
+            setTimeout(() => {
+                screen.style.display = 'none';
+                successMsg.style.display = 'block';
+                successMsg.style.animation = 'screenEntrance 1s ease-out';
+                
+                setTimeout(() => {
+                    startCountdown();
+                }, 2000);
+            }, 500);
+        }
+
+        function declineMission() {
+            alert('MISSION DECLINED\n\nThis conversation never happened.\n\nGood luck, Agent.');
+            location.reload();
+        }
+
+        function startCountdown() {
+            const countdown = document.getElementById('countdown');
+            const explosion = document.getElementById('explosion');
+            const staticEl = document.getElementById('static');
+            let count = 5;
+
+            countdown.style.display = 'block';
+
+            const interval = setInterval(() => {
+                count--;
+                if (countdown) {
+                    countdown.textContent = count;
+                }
+
+                if (count === 0) {
+                    clearInterval(interval);
+                    countdown.style.display = 'none';
+
+                    // Explosion effect
+                    explosion.style.display = 'block';
+                    explosion.style.background = 'radial-gradient(circle, #ff0000, #ff6600, #ffaa00, transparent)';
+                    explosion.style.animation = 'explode 0.5s ease-out';
+
+                    staticEl.style.display = 'block';
+
+                    setTimeout(() => {
+                        document.body.style.background = '#000';
+                        explosion.style.display = 'none';
+                        staticEl.style.display = 'none';
+                        document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Orbitron, sans-serif; color: #0f0; font-size: 3rem; text-align: center; letter-spacing: 5px;">MESSAGE DESTROYED</div>';
+
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+                    }, 500);
+                }
+            }, 1000);
+        }
+
+        // Auto-decline after 30 seconds
+        setTimeout(() => {
+            const buttons = document.querySelector('.buttons');
+            if (buttons && buttons.style.display !== 'none') {
+                startCountdown();
+            }
+        }, 30000);
+
+        // Add explosion animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes explode {
+                0% { opacity: 0; transform: scale(0); }
+                50% { opacity: 1; transform: scale(2); }
+                100% { opacity: 0; transform: scale(4); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
